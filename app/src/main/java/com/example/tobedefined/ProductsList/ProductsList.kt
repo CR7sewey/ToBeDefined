@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -57,10 +58,23 @@ fun ProductsListUI(modifier: Modifier = Modifier) {
         DisplayProductsChosen(productsChosen)
 
         Spacer(modifier = Modifier.width(10.dp))
-        ProductsList(productsChosen, onAddProduct = { it ->
+        val scroll = rememberScrollState(0)
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(scroll)
+                .fillMaxWidth()
+        ) {
+            ProductsList(productsChosen, onAddProduct = { it ->
                 //productsChosen.add(it)
-            prodVM.updateList(it)
-        })
+                prodVM.updateList(it)
+            })
+            ProductsList(productsChosen, onAddProduct = { it ->
+                //productsChosen.add(it)
+                prodVM.updateList(it)
+            })
+        }
+
         //
     }
 }
@@ -99,7 +113,6 @@ fun DisplayProductsChosen(productsChosen: List<Product>, modifier: Modifier = Mo
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-                Text(" --------- ", fontSize = 12.sp)
             }
         }
 
@@ -114,8 +127,7 @@ fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit 
 
     Column(
         modifier = Modifier
-            .verticalScroll(scroll)
-            .fillMaxWidth().padding(12.dp)
+            .fillMaxWidth().padding(28.dp)
     ) {
 
         LazyRow {
@@ -146,40 +158,12 @@ fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit 
                         modifier = Modifier.padding(16.dp)
                     )
                 }
+                Spacer(modifier = Modifier.width(8.dp))
             }
 
         }
 
-
-        LazyRow {
-            items(productSeed) { it ->
-                Card(
-                    colors = CardDefaults.cardColors(),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                ) {
-                    Text(
-                        text = it.name,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Text(
-                        text = "${it.price} €",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
-
-        }
+        Spacer(modifier = Modifier.height(6.dp))
 
     }
 }
