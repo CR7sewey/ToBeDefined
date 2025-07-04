@@ -5,7 +5,7 @@ data class Product(
     val name: String,
     val price: Double,
     val image: Int? = null,
-    var quantity: Int? = 0
+    var quantity: Int? = 1
 )
 
 val productSeed: List<Product> = listOf(

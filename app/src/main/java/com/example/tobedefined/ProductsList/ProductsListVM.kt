@@ -15,6 +15,9 @@ class ProductsListVM : ViewModel() {
     private val _productsList = MutableStateFlow<List<Product>>(emptyList())
     var productListUI: StateFlow<List<Product>> = _productsList
 
+    private val _total = MutableStateFlow<Double>(0.0)
+    var total = _total
+
 
     fun updateList(prod: Product) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,19 +29,29 @@ class ProductsListVM : ViewModel() {
                     if (it.id == p.id) {
                         it.quantity = it.quantity?.plus(1)
                     }
-                    it
+                    Product(it.id, it.name, it.price, it.image, it.quantity)
                 }
-
+                val currentSize = _productsList.value.size
+               // _productsList.value = tempList.plus(Product(9999999,"",0.0))
+               // _productsList.value = _productsList.value.subList(0, currentSize-1)
                 _productsList.value = tempList
+                //_productsList.value = _productsList.value.dropLast(1)
+                Log.d("AAAA", _productsList.value.toString())
             }
             else {
                 _productsList.value = _productsList.value + prod
+
             }
+            calculateTotal()
         }
         catch (ex: Exception) {
             Log.d("ERRO", ex.message.toString())
         }
     }
+    }
+
+    private fun calculateTotal() {
+        total.value = _productsList.value.sumOf { (it.price * (it.quantity?.toDouble() ?: 0.0)) }
     }
 
 }

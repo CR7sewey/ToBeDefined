@@ -41,6 +41,8 @@ import com.example.tobedefined.productSeed
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
@@ -49,13 +51,13 @@ fun ProductsListUI(modifier: Modifier = Modifier) {
 //
     //var productsChosen by remember { mutableListOf<Product>() }
     var prodVM = viewModel<ProductsListVM>()
-    var productsChosen = prodVM.productListUI.collectAsState().value
+    //var productsChosen = prodVM.productListUI.collectAsState().value
     //var productsChosen = remember { mutableListOf<Product>() }
     Row(
         modifier = Modifier
 
     ) {
-        DisplayProductsChosen(productsChosen)
+        DisplayProductsChosen(productsListVM = prodVM)
 
         Spacer(modifier = Modifier.width(10.dp))
         val scroll = rememberScrollState(0)
@@ -65,11 +67,11 @@ fun ProductsListUI(modifier: Modifier = Modifier) {
                 .verticalScroll(scroll)
                 .fillMaxWidth()
         ) {
-            ProductsList(productsChosen, onAddProduct = { it ->
+            ProductsList(productsListVM = prodVM, "First", onAddProduct = { it ->
                 //productsChosen.add(it)
                 prodVM.updateList(it)
             })
-            ProductsList(productsChosen, onAddProduct = { it ->
+            ProductsList(productsListVM = prodVM, "Second", onAddProduct = { it ->
                 //productsChosen.add(it)
                 prodVM.updateList(it)
             })
@@ -80,10 +82,12 @@ fun ProductsListUI(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DisplayProductsChosen(productsChosen: List<Product>, modifier: Modifier = Modifier) {
+fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = Modifier) {
+    var productsChosen = productsListVM.productListUI.collectAsState().value
     Column(
         modifier = Modifier.width(256.dp).fillMaxHeight()
             .background(color = Color.LightGray).padding(8.dp),
+        verticalArrangement = Arrangement.SpaceBetween
 
     ) {
         // Product
@@ -116,19 +120,44 @@ fun DisplayProductsChosen(productsChosen: List<Product>, modifier: Modifier = Mo
             }
         }
 
+        Spacer(modifier = Modifier.height(56.dp))
+
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            //verticalAlignment = Alignment.Bottom,
+            //horizontalArrangement = Arrangement.Absolute.SpaceBetween
+        ) {
+            Text(text = "Total: ",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+
+            )
+            Spacer(modifier = Modifier.weight(1f)) // Spacer takes up all available space
+            Text(text = "${productsListVM.total.collectAsState().value}",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+
+                )
+        }
 
     }
 }
 
 @Composable
-fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit , modifier: Modifier = Modifier) {
+fun ProductsList(productsListVM: ProductsListVM, label: String, onAddProduct: (Product) -> Unit , modifier: Modifier = Modifier) {
 
     val scroll = rememberScrollState(0)
 
     Column(
         modifier = Modifier
-            .fillMaxWidth().padding(28.dp)
+            .fillMaxWidth().padding(18.dp)
     ) {
+
+        Text(
+            label,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 36.sp
+        )
 
         LazyRow {
             items(productSeed) { it ->
@@ -145,7 +174,7 @@ fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit 
                         text = it.name,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
-                        color = Color(0xFFFFFFFF),
+                        color = Color.Black,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -153,7 +182,7 @@ fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit 
                         text = "${it.price} €",
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp,
-                        color = Color(0xFFFFFFFF),
+                        color = Color.DarkGray,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -163,7 +192,7 @@ fun ProductsList(productsChosen: List<Product>, onAddProduct: (Product) -> Unit 
 
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
     }
 }
