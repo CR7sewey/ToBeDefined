@@ -64,4 +64,11 @@ class ProductsListVM : ViewModel() {
 
     }
 
+    fun deleteProduct(prod: Product) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _productsList.value = _productsList.value.filter { it.id != prod.id }
+            calculateTotal()
+        }
+    }
+
 }
