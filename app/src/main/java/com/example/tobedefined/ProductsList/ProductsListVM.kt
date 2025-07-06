@@ -16,7 +16,7 @@ class ProductsListVM : ViewModel() {
     var productListUI: StateFlow<List<Product>> = _productsList
 
     private val _total = MutableStateFlow<Double>(0.0)
-    var total = _total
+    var total: StateFlow<Double> = _total
 
 
     fun updateList(prod: Product) {
@@ -25,21 +25,20 @@ class ProductsListVM : ViewModel() {
             var p = _productsList.value.find { it2 -> prod.id == it2.id }
             if (p != null) {
 
-                var tempList  = _productsList.value.map { it.copy()
-                    if (it.id == p.id) {
-                        it.quantity = it.quantity?.plus(1)
+                var tempList = _productsList.value.map { existingProduct ->
+                    if (existingProduct.id == p.id) {
+                        // You need to create a NEW Product object when updating quantity
+                        existingProduct.copy(quantity = existingProduct.quantity + 1)
+                    } else {
+                        existingProduct // Return the original object if not modified
                     }
-                    Product(it.id, it.name, it.price, it.image, it.quantity)
                 }
-                val currentSize = _productsList.value.size
-               // _productsList.value = tempList.plus(Product(9999999,"",0.0))
-               // _productsList.value = _productsList.value.subList(0, currentSize-1)
                 _productsList.value = tempList
                 //_productsList.value = _productsList.value.dropLast(1)
                 Log.d("AAAA", _productsList.value.toString())
             }
             else {
-                _productsList.value = _productsList.value + prod
+                _productsList.value = _productsList.value + prod.copy(quantity = 1)
 
             }
             calculateTotal()
@@ -51,7 +50,18 @@ class ProductsListVM : ViewModel() {
     }
 
     private fun calculateTotal() {
-        total.value = _productsList.value.sumOf { (it.price * (it.quantity?.toDouble() ?: 0.0)) }
+        _total.value = _productsList.value.sumOf { (it.price * it.quantity.toDouble()) }
+    }
+
+    fun clearList() {
+        viewModelScope.launch {
+            Log.d("AAAA", "Clearing list. Current list: ${_productsList.value}")
+            _productsList.value = emptyList() // This is the correct way to clear and notify observers
+            _total.value = 0.0             // This is correct
+            Log.d("AAAA", "List cleared. New list: ${_productsList.value}, New total: ${_total.value}")
+
+        }
+
     }
 
 }

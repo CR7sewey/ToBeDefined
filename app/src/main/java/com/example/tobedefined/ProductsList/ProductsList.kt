@@ -46,37 +46,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.LineBreak
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tobedefined.common.data.Category
 
 
 @Composable
-fun ProductsListUI(modifier: Modifier = Modifier) {
+fun ProductsListUI(productsListVM: ProductsListVM, modifier: Modifier = Modifier) {
 //
     //var productsChosen by remember { mutableListOf<Product>() }
-    var prodVM = viewModel<ProductsListVM>()
+    //var prodVM = viewModel<ProductsListVM>()
     //var productsChosen = prodVM.productListUI.collectAsState().value
     //var productsChosen = remember { mutableListOf<Product>() }
     Row(
         modifier = Modifier
 
     ) {
-        DisplayProductsChosen(productsListVM = prodVM)
+        DisplayProductsChosen(productsListVM = productsListVM)
 
         Spacer(modifier = Modifier.width(10.dp))
         val scroll = rememberScrollState(0)
 
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .verticalScroll(scroll)
                 .fillMaxWidth()
         ) {
-            ProductsList(productsListVM = prodVM, "First", onAddProduct = { it ->
-                //productsChosen.add(it)
-                prodVM.updateList(it)
-            })
-            ProductsList(productsListVM = prodVM, "Second", onAddProduct = { it ->
-                //productsChosen.add(it)
-                prodVM.updateList(it)
-            })
+            items(Category.entries) { it ->
+                ProductsList(productsListVM = productsListVM, it, onAddProduct = { it ->
+                    //productsChosen.add(it)
+                    productsListVM.updateList(it)
+                })
+            }
         }
 
         //
@@ -88,7 +86,7 @@ fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = M
     var productsChosen = productsListVM.productListUI.collectAsState().value
     Column(
         modifier = Modifier.width(256.dp).fillMaxHeight()
-            .background(color = Color.LightGray).padding(8.dp),
+            .background(color = Color.LightGray).padding(18.dp),
         verticalArrangement = Arrangement.SpaceBetween
 
     ) {
@@ -165,7 +163,7 @@ fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = M
 }
 
 @Composable
-fun ProductsList(productsListVM: ProductsListVM, label: String, onAddProduct: (Product) -> Unit , modifier: Modifier = Modifier) {
+fun ProductsList(productsListVM: ProductsListVM, cat: Category, onAddProduct: (Product) -> Unit , modifier: Modifier = Modifier) {
 
     val scroll = rememberScrollState(0)
 
@@ -175,40 +173,44 @@ fun ProductsList(productsListVM: ProductsListVM, label: String, onAddProduct: (P
     ) {
 
         Text(
-            label,
+            cat.name,
             fontWeight = FontWeight.SemiBold,
             fontSize = 36.sp
         )
 
         LazyRow {
             items(productSeed) { it ->
-                Card(
-                    colors = CardDefaults.cardColors(),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth().clickable(onClick = {
-                            onAddProduct(it)
-                        }),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                ) {
-                    Text(
-                        text = it.name,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Text(
-                        text = "${it.price} €",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                        color = Color.DarkGray,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                if (it.category == cat) {
+                    Card(
+                        colors = CardDefaults.cardColors(),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxWidth().clickable(onClick = {
+                                onAddProduct(it)
+                            }),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                    ) {
+                        Text(
+                            text = it.name,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                        Text(
+                            text = "${it.price} €",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                            color = Color.DarkGray,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+
             }
 
         }
