@@ -50,6 +50,9 @@ val productSeed: List<Product> = listOf(
     Product(4, "Coca-Cola", 2.5, image = R.drawable.cocacola),
     Product(5, "Sumol", 2.5),
     Product(6, "Vodka Redbull", 3.5),
-    Product(7, "Cachorros", 2.5, R.drawable.hotdog)
+    Product(7, "Cachorros", 2.5, R.drawable.hotdog),
+            Product(8, "Sumol 2", 2.5),
+Product(9, "Vodka Redbull 2", 3.5),
+Product(10, "Cachorros 2", 2.5, R.drawable.hotdog)
 
 )

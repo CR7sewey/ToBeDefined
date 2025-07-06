@@ -24,6 +24,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -43,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.LineBreak
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
@@ -94,36 +96,55 @@ fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = M
 
         // quantity x price
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.weight(1f) // Crucial: This makes LazyColumn take available space
+        ) {
             items(productsChosen) { it ->
                 Text(
                     text = it.name,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.SemiBold
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    modifier = modifier.fillMaxWidth(),
                 ) {
                     Text(
                         text = "${it.quantity}",
-                        fontSize = 16.sp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.weight(1f))
 
                     Text(
-                        text = "${it.price} €",
-                        fontSize = 16.sp,
+                        text = "x ${it.price} €",
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                // Add a Divider after each item, except maybe the last one
+                if (productsChosen.last() != it) { // Optional: Don't add divider after the last item
+                    Divider(
+                        color = Color.Gray, // Customize color as needed
+                        thickness = 1.dp,  // Customize thickness as needed
+                        modifier = Modifier.padding(vertical = 8.dp) // Optional padding around the divider
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(56.dp))
+        //Spacer(modifier = Modifier.height(56.dp))
+// Spacer to ensure there's some gap if the list is short,
+        // or if you want to push the Total row down a bit more.
+        // This is optional if the LazyColumn with weight(1f) behaves as desired.
+        // Spacer(modifier = Modifier.height(8.dp))
 
+        // Total row - always at the bottom
         Row(
             modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween // Keep this for text alignment
             //verticalAlignment = Alignment.Bottom,
             //horizontalArrangement = Arrangement.Absolute.SpaceBetween
         ) {
@@ -133,7 +154,7 @@ fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = M
 
             )
             Spacer(modifier = Modifier.weight(1f)) // Spacer takes up all available space
-            Text(text = "${productsListVM.total.collectAsState().value}",
+            Text(text = "${productsListVM.total.collectAsState().value} €",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
 
