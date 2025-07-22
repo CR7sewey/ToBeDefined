@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.example.tobedefined.Dashboard.DashboardUI
+import com.example.tobedefined.Dashboard.TempItem
 import com.example.tobedefined.Login.LoginUI
 import com.example.tobedefined.ProductsList.ProductsListUI
 import com.example.tobedefined.ProductsList.ProductsListVM
@@ -76,4 +77,10 @@ val productSeed: List<Product> = listOf(
     Product(id = 8, name = "Cachorro", category = Category.Comida, price = 2.5),
     Product(id = 9, name = "Bifana", category = Category.Comida, price = 2.5),
     Product(id = 10, name = "Pão Chouriço", category = Category.Comida, price = 2.5)
+)
+
+val itemsL = listOf<TempItem>(
+    TempItem(1, "Create Item", R.drawable.cocacola),
+    TempItem(2, "Delete/Edit Item", R.drawable.hotdog),
+    TempItem(3, "Stats", R.drawable.hotdog),
 )

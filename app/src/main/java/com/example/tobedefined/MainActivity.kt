@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
                     floatingActionButton = {
                         Log.d("Route", navController.currentBackStackEntry?.destination?.route.toString())
                         Log.d("Route", NavigationClasses.NavigationRoutes.Login.nroute)
-                        if (currentRoute != NavigationClasses.NavigationRoutes.Login.nroute)
-
-                            FloatingButtonClean(productVM, navController)
+                        if (currentRoute == NavigationClasses.NavigationRoutes.Login.nroute || currentRoute == NavigationClasses.NavigationRoutes.Dashboard.nroute)
+                            return@Scaffold
+                        FloatingButtonClean(productVM, navController)
 
                     }
 
