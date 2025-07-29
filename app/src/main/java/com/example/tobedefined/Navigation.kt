@@ -32,7 +32,7 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
         }
 
         composable(route = NavigationClasses.NavigationRoutes.Dashboard.nroute) {
-            DashboardUI()
+            DashboardUI(navHostController)
             updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
             Log.d("Route d", navHostController.currentBackStackEntry?.destination?.route.toString())
 
