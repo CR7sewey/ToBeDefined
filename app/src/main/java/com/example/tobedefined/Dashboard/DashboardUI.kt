@@ -2,6 +2,7 @@ package com.example.tobedefined.Dashboard
 
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -44,7 +45,8 @@ fun DashboardUI(navHostController: NavHostController, modifier: Modifier = Modif
 data class TempItem(
     val id: Int,
     val name: String,
-    val imageUrl: Int
+    val imageUrl: Int,
+    val route: String? = null
 )
 
 
@@ -71,7 +73,9 @@ fun GridContent(navHostController: NavHostController? = null, modifier: Modifier
 
                 items(itemsL) { index ->
                     androidx.compose.material3.Card(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().clickable {
+                            navHostController?.navigate(index.route.toString())
+                        },
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
                         elevation = androidx.compose.material3.CardDefaults.cardElevation(4.dp)
                     ) {

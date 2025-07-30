@@ -5,5 +5,7 @@ sealed class NavigationClasses(val id: Int, val route: String) {
         object Login : NavigationRoutes(nid = 0, nroute = "login")
         object Dashboard: NavigationRoutes(1,"dashboard")
         object ProductsList: NavigationRoutes(2, "products")
+        object CreateItem: NavigationRoutes(3, "dashboard/createItem")
+        object EditItem: NavigationRoutes(4, "dashboard/editItem")
     }
 }

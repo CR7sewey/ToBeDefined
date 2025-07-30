@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import com.example.tobedefined.Dashboard.CreateItem.CreateItemUI
 import com.example.tobedefined.Dashboard.DashboardUI
 import com.example.tobedefined.Dashboard.TempItem
 import com.example.tobedefined.Login.LoginUI
@@ -40,6 +41,11 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
 
         composable(route = NavigationClasses.NavigationRoutes.ProductsList.nroute) {
             ProductsListUI(productVM)
+            updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
+        }
+
+        composable(route = NavigationClasses.NavigationRoutes.CreateItem.nroute) {
+            CreateItemUI(navHostController)
             updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
         }
 
@@ -80,7 +86,7 @@ val productSeed: List<Product> = listOf(
 )
 
 val itemsL = listOf<TempItem>(
-    TempItem(1, "Create Item", R.drawable.cocacola),
-    TempItem(2, "Delete/Edit Item", R.drawable.hotdog),
+    TempItem(1, "Create Item", R.drawable.cocacola, "dashboard/createItem"),
+    TempItem(2, "Delete/Edit Item", R.drawable.hotdog, "dashboard/editItem"),
     TempItem(3, "Stats", R.drawable.hotdog),
 )
