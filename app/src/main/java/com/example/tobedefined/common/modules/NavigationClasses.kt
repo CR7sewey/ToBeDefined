@@ -7,5 +7,9 @@ sealed class NavigationClasses(val id: Int, val route: String) {
         object ProductsList: NavigationRoutes(2, "products")
         object CreateItem: NavigationRoutes(3, "dashboard/createItem")
         object EditItem: NavigationRoutes(4, "dashboard/editItem")
+        object EditItemSpecific: NavigationRoutes(5, "dashboard/editItem/{id}") {
+            fun createRoute(id: Int) = "dashboard/editItem/$id"
+
+        }
     }
 }

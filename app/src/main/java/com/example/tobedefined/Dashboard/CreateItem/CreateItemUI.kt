@@ -3,6 +3,7 @@ package com.example.tobedefined.Dashboard.CreateItem
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,24 +35,36 @@ import androidx.navigation.NavHostController
 import com.example.tobedefined.Login.TextInput
 import com.example.tobedefined.common.data.Category
 import com.example.tobedefined.common.data.Product
+import com.example.tobedefined.productSeed
 
 @Composable
-fun CreateItemUI(navHostController: NavHostController, modifier: Modifier = Modifier) {
-    ProductInputForm()
+fun CreateItemUI(navHostController: NavHostController, id: String = "", modifier: Modifier = Modifier) {
+
+    if (id != "") {
+        val product = productSeed.find { it.id == id.toInt() }
+        ProductInputForm(navHostController, product) // method to insert in database/firebase etc to be done later on
+    }
+    else {
+
+        ProductInputForm(navHostController) // method to insert in database/firebase etc to be done later on
+    }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductInputForm(
-    modifier: Modifier = Modifier,
+
+    navHostController: NavHostController = NavHostController(LocalContext.current),
+    product: Product? = null,
     categories: List<Category> = Category.entries, // Get categories from your enum
-    onSubmit: (product: Product) -> Unit = { Log.d("A","A") }
+    onSubmit: (product: Product) -> Unit = { Log.d("A","A") },
+    modifier: Modifier = Modifier,
 ) {
-    var name by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf(categories.firstOrNull()) } // Default to first or null
-    var quantity by remember { mutableStateOf("1") } // Quantity as String for TextField
+    var name by remember { mutableStateOf(product?.name ?: "") }
+    var price by remember { mutableStateOf(product?.price?.toString() ?: "") }
+    var selectedCategory by remember { mutableStateOf(product?.category ?: categories.firstOrNull()) } // Default to first or null
+    var quantity by remember { mutableStateOf((product?.quantity ?: "1").toString()) } // Quantity as String for TextField
 
     var nameError by remember { mutableStateOf<String?>(null) }
     var priceError by remember { mutableStateOf<String?>(null) }
@@ -157,28 +171,68 @@ fun ProductInputForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                if (validateFields() && selectedCategory != null) {
-                    val newProduct = Product(
-                        id = (0..Int.MAX_VALUE).random(), // Example ID generation
-                        name = name.trim(),
-                        category = selectedCategory!!, // Safe due to validation
-                        price = price.toDouble(),      // Safe due to validation
-                        quantity = quantity.toInt()    // Safe due to validation
-                    )
-                    onSubmit(newProduct)
-                    // Optionally clear fields after submission
-                    name = ""
-                    price = ""
-                    // selectedCategory = categories.firstOrNull() // Or keep it
-                    quantity = "1"
-                }
-            },
-            modifier = Modifier.width(256.dp),
-            shape = MaterialTheme.shapes.medium // Rounded corners
-        ) {
-            Text("Add Product", style = MaterialTheme.typography.titleMedium)
+        Row {
+            Button(
+                onClick = {
+                    if (product != null) {
+                        // TODO
+                        navHostController.popBackStack()
+                    }
+                    else {
+                        // TODO
+                        navHostController.popBackStack()
+                    }
+
+
+                          },
+                modifier = Modifier.width(256.dp),
+                shape = MaterialTheme.shapes.medium, // Rounded corners
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.inversePrimary
+                )
+            ) {
+                val texto = if (product != null) "Delete" else "Back"
+                Text(texto, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary)
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+
+                    if (product != null) {
+                        // TODO
+                        if (validateFields() && selectedCategory != null) {
+                            val newProduct = Product(
+                                id = (0..Int.MAX_VALUE).random(), // Example ID generation
+                                name = name.trim(),
+                                category = selectedCategory!!, // Safe due to validation
+                                price = price.toDouble(),      // Safe due to validation
+                                quantity = quantity.toInt()    // Safe due to validation
+                            )
+                            onSubmit(newProduct)
+                            // Optionally clear fields after submission
+                            name = ""
+                            price = ""
+                            // selectedCategory = categories.firstOrNull() // Or keep it
+                            quantity = "1"
+                        }
+                        navHostController.navigate("dashboard")
+                    }
+                    else {
+                        // TODO
+                    }
+
+                },
+                modifier = Modifier.width(256.dp),
+                shape = MaterialTheme.shapes.medium // Rounded corners
+            ) {
+                val texto = if (product != null) "Update Product" else "Create Product"
+
+                Text(texto, style = MaterialTheme.typography.titleMedium)
+            }
         }
+
+
     }
 }

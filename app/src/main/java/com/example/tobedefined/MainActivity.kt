@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
                         if (currentRoute == NavigationClasses.NavigationRoutes.Login.nroute
                             || currentRoute == NavigationClasses.NavigationRoutes.Dashboard.nroute
                             || currentRoute == NavigationClasses.NavigationRoutes.CreateItem.nroute
+                            || currentRoute == NavigationClasses.NavigationRoutes.EditItem.nroute
                             )
                             return@Scaffold
                         FloatingButtonClean(productVM, navController)

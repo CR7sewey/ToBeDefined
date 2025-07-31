@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import androidx.navigation.navArgument
 import com.example.tobedefined.Dashboard.CreateItem.CreateItemUI
 import com.example.tobedefined.Dashboard.DashboardUI
+import com.example.tobedefined.Dashboard.DeleteItem.DeleteItemUI
 import com.example.tobedefined.Dashboard.TempItem
 import com.example.tobedefined.Login.LoginUI
 import com.example.tobedefined.ProductsList.ProductsListUI
@@ -46,6 +49,19 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
 
         composable(route = NavigationClasses.NavigationRoutes.CreateItem.nroute) {
             CreateItemUI(navHostController)
+            updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
+        }
+
+        composable(route = NavigationClasses.NavigationRoutes.EditItem.nroute) {
+            DeleteItemUI(navHostController, productVM)
+            updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
+        }
+
+        composable(route = NavigationClasses.NavigationRoutes.EditItemSpecific.nroute, arguments = listOf(
+            navArgument("id"){ type=
+            NavType.StringType})) {
+            val id = requireNotNull(it.arguments?.getString("id"))
+            CreateItemUI(navHostController, id)
             updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
         }
 
