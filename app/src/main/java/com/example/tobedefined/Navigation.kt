@@ -48,7 +48,7 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
         }
 
         composable(route = NavigationClasses.NavigationRoutes.CreateItem.nroute) {
-            CreateItemUI(navHostController)
+            CreateItemUI(navHostController, productVM)
             updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
         }
 
@@ -61,7 +61,7 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
             navArgument("id"){ type=
             NavType.StringType})) {
             val id = requireNotNull(it.arguments?.getString("id"))
-            CreateItemUI(navHostController, id)
+            CreateItemUI(navHostController, productVM, id)
             updateCurrentRoute(navHostController.currentBackStackEntry?.destination?.route)
         }
 
@@ -87,7 +87,7 @@ fun Navigation(productVM: ProductsListVM, navHostController: NavHostController =
  */
 
 
-val productSeed: List<Product> = listOf(
+val productSeed: MutableList<Product> = mutableListOf(
     Product(id = 0, name = "Coca-Cola", category = Category.Sumos, price = 3.0),
     Product(id = 1, name = "Pepsi", category = Category.Sumos, price = 3.0),
     Product(id = 2, name = "Sumol", category = Category.Sumos, price = 3.0),

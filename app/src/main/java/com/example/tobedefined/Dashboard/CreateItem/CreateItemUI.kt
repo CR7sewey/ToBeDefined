@@ -33,12 +33,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.tobedefined.Login.TextInput
+import com.example.tobedefined.ProductsList.ProductsListVM
 import com.example.tobedefined.common.data.Category
 import com.example.tobedefined.common.data.Product
+import com.example.tobedefined.common.modules.NavigationClasses
 import com.example.tobedefined.productSeed
 
 @Composable
-fun CreateItemUI(navHostController: NavHostController, id: String = "", modifier: Modifier = Modifier) {
+fun CreateItemUI(navHostController: NavHostController, productVM: ProductsListVM, id: String = "", modifier: Modifier = Modifier) {
+
+
 
     if (id != "") {
         val product = productSeed.find { it.id == id.toInt() }
@@ -49,6 +53,7 @@ fun CreateItemUI(navHostController: NavHostController, id: String = "", modifier
         ProductInputForm(navHostController) // method to insert in database/firebase etc to be done later on
     }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,6 +181,7 @@ fun ProductInputForm(
                 onClick = {
                     if (product != null) {
                         // TODO
+                        productSeed.remove(product)
                         navHostController.popBackStack()
                     }
                     else {
@@ -200,28 +206,38 @@ fun ProductInputForm(
             Button(
                 onClick = {
 
-                    if (product != null) {
-                        // TODO
+
                         if (validateFields() && selectedCategory != null) {
                             val newProduct = Product(
-                                id = (0..Int.MAX_VALUE).random(), // Example ID generation
+                                id = product?.id ?: (0..Int.MAX_VALUE).random(), // Example ID generation
                                 name = name.trim(),
                                 category = selectedCategory!!, // Safe due to validation
                                 price = price.toDouble(),      // Safe due to validation
                                 quantity = quantity.toInt()    // Safe due to validation
                             )
-                            onSubmit(newProduct)
                             // Optionally clear fields after submission
                             name = ""
                             price = ""
                             // selectedCategory = categories.firstOrNull() // Or keep it
                             quantity = "1"
+
+                            if (product != null) {
+                                val p1 = productSeed.find { it -> it.id == product.id }
+                                val i1 = productSeed.indexOf(p1)
+                                productSeed.removeAt(i1)
+                                productSeed.add(i1, newProduct)
+                                // TODO
+                            }
+                            else {
+                                // TODO
+                                productSeed.add(newProduct)
+
+                            }
+                            navHostController.navigate(NavigationClasses.NavigationRoutes.ProductsList.nroute)
                         }
-                        navHostController.navigate("dashboard")
-                    }
-                    else {
-                        // TODO
-                    }
+
+
+
 
                 },
                 modifier = Modifier.width(256.dp),
