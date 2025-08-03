@@ -34,11 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tobedefined.ProductsList.ProductsListVM
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        auth = Firebase.auth
+
         setContent {
             ToBeDefinedTheme {
                 val navController = rememberNavController()
@@ -60,7 +69,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                 ) { innerPadding ->
-                    Navigation(productVM, navController, updateCurrentRoute = {
+                    Navigation(productVM, auth, navController, updateCurrentRoute = {
                         currentRoute = it
                         Log.d("Route dd", currentRoute.toString())
                     })

@@ -20,15 +20,16 @@ import com.example.tobedefined.ProductsList.ProductsListVM
 import com.example.tobedefined.common.data.Category
 import com.example.tobedefined.common.data.Product
 import com.example.tobedefined.common.modules.NavigationClasses
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun Navigation(productVM: ProductsListVM, navHostController: NavHostController = rememberNavController(), updateCurrentRoute: (String?) -> Unit, modifier: Modifier = Modifier) {
+fun Navigation(productVM: ProductsListVM, auth: FirebaseAuth, navHostController: NavHostController = rememberNavController(), updateCurrentRoute: (String?) -> Unit, modifier: Modifier = Modifier) {
 
     val navGraph = navHostController.createGraph(
         startDestination = NavigationClasses.NavigationRoutes.Login.nroute
     ) {
         composable(route = NavigationClasses.NavigationRoutes.Login.nroute ) {
-            LoginUI(navHostController)
+            LoginUI(navHostController, auth)
 
             updateCurrentRoute.invoke(navHostController.currentBackStackEntry?.destination?.route)
             Log.d("Route d", navHostController.currentBackStackEntry?.destination?.route.toString())

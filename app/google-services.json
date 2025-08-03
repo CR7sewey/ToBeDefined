@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1050805107080",
+    "project_id": "festalousoesdashboard",
+    "storage_bucket": "festalousoesdashboard.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050805107080:android:33f66c55c73fd891a6e23d",
+        "android_client_info": {
+          "package_name": "com.example.tobedefined"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl2yJu74k1UrEaSoTQU7npWk68RyU6Wxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
