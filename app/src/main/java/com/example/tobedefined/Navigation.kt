@@ -1,8 +1,10 @@
 package com.example.tobedefined
 
 import android.util.Log
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,6 +16,7 @@ import com.example.tobedefined.Dashboard.CreateItem.CreateItemUI
 import com.example.tobedefined.Dashboard.DashboardUI
 import com.example.tobedefined.Dashboard.DeleteItem.DeleteItemUI
 import com.example.tobedefined.Dashboard.TempItem
+import com.example.tobedefined.Login.LoginMVVM
 import com.example.tobedefined.Login.LoginUI
 import com.example.tobedefined.ProductsList.ProductsListUI
 import com.example.tobedefined.ProductsList.ProductsListVM
@@ -23,13 +26,13 @@ import com.example.tobedefined.common.modules.NavigationClasses
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun Navigation(productVM: ProductsListVM, auth: FirebaseAuth, navHostController: NavHostController = rememberNavController(), updateCurrentRoute: (String?) -> Unit, modifier: Modifier = Modifier) {
+fun Navigation(productVM: ProductsListVM, auth: FirebaseAuth, loginMVVM: LoginMVVM, navHostController: NavHostController = rememberNavController(), updateCurrentRoute: (String?) -> Unit, modifier: Modifier = Modifier) {
 
     val navGraph = navHostController.createGraph(
         startDestination = NavigationClasses.NavigationRoutes.Login.nroute
     ) {
         composable(route = NavigationClasses.NavigationRoutes.Login.nroute ) {
-            LoginUI(navHostController, auth)
+            LoginUI(navHostController, auth, loginMVVM)
 
             updateCurrentRoute.invoke(navHostController.currentBackStackEntry?.destination?.route)
             Log.d("Route d", navHostController.currentBackStackEntry?.destination?.route.toString())

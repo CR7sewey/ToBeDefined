@@ -77,4 +77,12 @@ class LoginMVVM: ViewModel() {
         }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            firebaseAuth.signOut()
+            _user.value = null
+            Log.d("LoginMVVM", "User logged out.")
+        }
+    }
+
 }

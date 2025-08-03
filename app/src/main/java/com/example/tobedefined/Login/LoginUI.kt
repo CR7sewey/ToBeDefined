@@ -47,7 +47,7 @@ import kotlinx.coroutines.withContext
 import kotlin.text.isBlank
 
 @Composable
-fun LoginUI(navHostController: NavHostController, auth: FirebaseAuth, modifier: Modifier = Modifier) {
+fun LoginUI(navHostController: NavHostController, auth: FirebaseAuth, loginMVVM: LoginMVVM, modifier: Modifier = Modifier) {
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -56,7 +56,7 @@ fun LoginUI(navHostController: NavHostController, auth: FirebaseAuth, modifier: 
     val context = LocalContext.current
     val scope = rememberCoroutineScope() // Get a coroutine scope
 
-    val loginMVVM: LoginMVVM = viewModel<LoginMVVM>()
+
     val user = loginMVVM.user.collectAsState().value
 
     // Use LaunchedEffect to react to changes in userState for navigation
