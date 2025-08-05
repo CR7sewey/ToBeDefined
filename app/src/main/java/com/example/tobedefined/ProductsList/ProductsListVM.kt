@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tobedefined.ProductsList.data.ProductsListRepository
 import com.example.tobedefined.common.data.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,26 @@ class ProductsListVM : ViewModel() {
     private val _total = MutableStateFlow<Double>(0.0)
     var total: StateFlow<Double> = _total
 
+    private val _productListRepository = ProductsListRepository()
+
+    init {
+        getProducts()
+    }
+
+
+
+    fun getProducts() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _productsList.value = _productListRepository.getProducts()
+                Log.d("AAAA", _productsList.value.toString())
+                calculateTotal()
+            } catch (ex: Exception) {
+                Log.d("ERRO", ex.message.toString())
+
+            }
+        }
+    }
 
     fun updateList(prod: Product) {
         viewModelScope.launch(Dispatchers.IO) {
