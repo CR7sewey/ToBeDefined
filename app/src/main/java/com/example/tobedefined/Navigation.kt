@@ -92,17 +92,17 @@ fun Navigation(productVM: ProductsListVM, auth: FirebaseAuth, loginMVVM: LoginMV
 
 
 val productSeed: MutableList<Product> = mutableListOf(
-    Product(id = 0, name = "Coca-Cola", category = Category.Sumos, price = 3.0),
-    Product(id = 1, name = "Pepsi", category = Category.Sumos, price = 3.0),
-    Product(id = 2, name = "Sumol", category = Category.Sumos, price = 3.0),
-    Product(id = 3, name = "Ice Tea", category = Category.Sumos, price = 3.0),
-    Product(id = 4, name = "Cerveja", category = Category.Alcool, price = 1.0),
-    Product(id = 5, name = "Vodka", category = Category.Alcool, price = 2.5),
-    Product(id = 6, name = "Whisky", category = Category.Alcool, price = 3.0),
-    Product(id = 7, name = "Shot", category = Category.Alcool, price = 1.5),
-    Product(id = 8, name = "Cachorro", category = Category.Comida, price = 2.5),
-    Product(id = 9, name = "Bifana", category = Category.Comida, price = 2.5),
-    Product(id = 10, name = "Pão Chouriço", category = Category.Comida, price = 2.5)
+    Product(id = 0.toString(), name = "Coca-Cola", category = Category.Sumos, price = 3.0),
+    Product(id = 1.toString(), name = "Pepsi", category = Category.Sumos, price = 3.0),
+    Product(id = 2.toString(), name = "Sumol", category = Category.Sumos, price = 3.0),
+    Product(id = 3.toString(), name = "Ice Tea", category = Category.Sumos, price = 3.0),
+    Product(id = 4.toString(), name = "Cerveja", category = Category.Alcool, price = 1.0),
+    Product(id = 5.toString(), name = "Vodka", category = Category.Alcool, price = 2.5),
+    Product(id = 6.toString(), name = "Whisky", category = Category.Alcool, price = 3.0),
+    Product(id = 7.toString(), name = "Shot", category = Category.Alcool, price = 1.5),
+    Product(id = 8.toString(), name = "Cachorro", category = Category.Comida, price = 2.5),
+    Product(id = 9.toString(), name = "Bifana", category = Category.Comida, price = 2.5),
+    Product(id = 10.toString(), name = "Pão Chouriço", category = Category.Comida, price = 2.5)
 )
 
 val itemsL = listOf<TempItem>(

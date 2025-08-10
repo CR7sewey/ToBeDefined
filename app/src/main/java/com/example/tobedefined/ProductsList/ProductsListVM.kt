@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tobedefined.ProductsList.data.ProductsListRepository
 import com.example.tobedefined.common.data.Product
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,22 +17,33 @@ class ProductsListVM : ViewModel() {
     private val _productsList = MutableStateFlow<List<Product>>(emptyList())
     var productListUI: StateFlow<List<Product>> = _productsList
 
+    private val _productsListDB = MutableStateFlow<List<Product>>(emptyList())
+    var productListDBUI: StateFlow<List<Product>> = _productsListDB
+
     private val _total = MutableStateFlow<Double>(0.0)
     var total: StateFlow<Double> = _total
 
     private val _productListRepository = ProductsListRepository()
 
-    init {
-        getProducts()
-    }
 
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val currentUser = firebaseAuth.currentUser
 
 
     fun getProducts() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _productsList.value = _productListRepository.getProducts()
-                Log.d("AAAA", _productsList.value.toString())
+                if (currentUser != null) {
+                    // User is signed in, proceed with Firestore operation
+                    Log.d("FirestoreAuth", "User is authenticated: ${currentUser.uid}")
+                    // ... your Firestore query ...
+                }
+                else {
+                    // User is not signed in, handle accordingly
+                    Log.d("FirestoreAuth", "User is not authenticated")
+                }
+                _productsListDB.value = _productListRepository.getProducts()
+                Log.d("AAAA", _productsListDB.value.toString())
                 calculateTotal()
             } catch (ex: Exception) {
                 Log.d("ERRO", ex.message.toString())

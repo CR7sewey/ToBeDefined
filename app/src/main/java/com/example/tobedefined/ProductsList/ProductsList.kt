@@ -61,6 +61,7 @@ fun ProductsListUI(productsListVM: ProductsListVM, modifier: Modifier = Modifier
     //var prodVM = viewModel<ProductsListVM>()
     //var productsChosen = prodVM.productListUI.collectAsState().value
     //var productsChosen = remember { mutableListOf<Product>() }
+    productsListVM.getProducts()
     Row(
         modifier = Modifier
 

@@ -45,7 +45,7 @@ fun CreateItemUI(navHostController: NavHostController, productVM: ProductsListVM
 
 
     if (id != "") {
-        val product = productSeed.find { it.id == id.toInt() }
+        val product = productSeed.find { it.id == id }
         ProductInputForm(navHostController, product) // method to insert in database/firebase etc to be done later on
     }
     else {
@@ -209,7 +209,7 @@ fun ProductInputForm(
 
                         if (validateFields() && selectedCategory != null) {
                             val newProduct = Product(
-                                id = product?.id ?: (0..Int.MAX_VALUE).random(), // Example ID generation
+                                id = product?.id ?: (0..Int.MAX_VALUE).random().toString(), //product?.id ?: (0..Int.MAX_VALUE).random(), // Example ID generation
                                 name = name.trim(),
                                 category = selectedCategory!!, // Safe due to validation
                                 price = price.toDouble(),      // Safe due to validation
