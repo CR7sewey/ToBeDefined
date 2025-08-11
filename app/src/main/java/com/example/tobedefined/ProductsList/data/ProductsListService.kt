@@ -108,8 +108,8 @@ class ProductsListService {
 
                     val categoryRef = categoryString?.get()?.await()
 
-                    val category = Category.valueOf(categoryRef?.getString("data") ?: Category.UNKNOWN.name)
-
+                    val category = Category.valueOf(categoryRef?.getString("type") ?: Category.UNKNOWN.name)
+                    //Log.d(TAG, "Fetched product: ${document.id} => ${categoryRef?.getString("type")}")
 
                     // Convert categoryString to Category enum (example)
                     /*val category = try {

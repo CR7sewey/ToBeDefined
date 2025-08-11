@@ -1,6 +1,7 @@
 package com.example.tobedefined.ProductsList
 
 import android.graphics.drawable.Icon
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.LineBreak
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tobedefined.Login.LoginUI
 import com.example.tobedefined.common.data.Category
 
 
@@ -62,6 +64,7 @@ fun ProductsListUI(productsListVM: ProductsListVM, modifier: Modifier = Modifier
     //var productsChosen = prodVM.productListUI.collectAsState().value
     //var productsChosen = remember { mutableListOf<Product>() }
     productsListVM.getProducts()
+    // val products = productsListVM.productListDBUI.collectAsState().value
     Row(
         modifier = Modifier
 
@@ -191,7 +194,8 @@ fun DisplayProductsChosen(productsListVM: ProductsListVM, modifier: Modifier = M
 fun ProductsList(productsListVM: ProductsListVM, cat: Category, onAddProduct: (Product) -> Unit , modifier: Modifier = Modifier) {
 
     val scroll = rememberScrollState(0)
-
+    val products = productsListVM.productListDBUI.collectAsState().value
+    Log.d("AAAA", products.toString())
     Column(
         modifier = Modifier
             .fillMaxWidth().padding(18.dp)
@@ -204,7 +208,7 @@ fun ProductsList(productsListVM: ProductsListVM, cat: Category, onAddProduct: (P
         )
 
         LazyRow {
-            items(productSeed) { it ->
+            items(products) { it ->
                 if (it.category == cat) {
                     Card(
                         colors = CardDefaults.cardColors(),
